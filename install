@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
+
+RETHINKDB_IMAGE="rethinkdb"
+RETHINKDB_IMAGE_VERSION=2.1.1
+RETHINKDB_ROOT=/var/lib/dokku/services/rethinkdb
+
+PLUGIN_DATA_ROOT=$RETHINKDB_ROOT
+PLUGIN_SERVICE="RethinkDB"
+PLUGIN_IMAGE=$RETHINKDB_IMAGE
+PLUGIN_IMAGE_VERSION=$RETHINKDB_IMAGE_VERSION
+
+if ! docker images | grep -e "^$PLUGIN_IMAGE " | grep -q $PLUGIN_IMAGE_VERSION ; then
+  docker pull $PLUGIN_IMAGE:$PLUGIN_IMAGE_VERSION
+fi
+
+mkdir -p $PLUGIN_DATA_ROOT || echo "Failed to create $PLUGIN_SERVICE directory"
+chown dokku:dokku $PLUGIN_DATA_ROOT
