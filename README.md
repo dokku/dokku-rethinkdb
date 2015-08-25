@@ -11,7 +11,7 @@ Official rethinkdb plugin for dokku. Currently installs rethinkdb 2.1.1.
 
 ```
 cd /var/lib/dokku/plugins
-git clone https://github.com/dokku/dokku-rethinkdb-plugin.git rethinkdb
+git clone https://github.com/dokku/dokku-rethinkdb.git rethinkdb
 dokku plugins-install-dependencies
 dokku plugins-install
 ```
