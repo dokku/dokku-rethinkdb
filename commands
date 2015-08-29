@@ -2,16 +2,7 @@
 set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 source "$(dirname "$0")/../common/functions"
 source "$(dirname "$0")/functions"
-
-RETHINKDB_IMAGE=${RETHINKDB_IMAGE:="rethinkdb"}
-RETHINKDB_IMAGE_VERSION=${RETHINKDB_IMAGE_VERSION:="2.1.1"}
-RETHINKDB_ROOT=/var/lib/dokku/services/rethinkdb
-
-PLUGIN_COMMAND_PREFIX="rethinkdb"
-PLUGIN_DATA_ROOT=$RETHINKDB_ROOT
-PLUGIN_SERVICE="RethinkDB"
-PLUGIN_IMAGE=$RETHINKDB_IMAGE
-PLUGIN_IMAGE_VERSION=$RETHINKDB_IMAGE_VERSION
+source "$(dirname "$0")/config"
 
 if [[ ! -d $PLUGIN_DATA_ROOT ]]; then
   dokku_log_fail "$PLUGIN_SERVICE: Please run: sudo dokku plugins-install"
