@@ -25,15 +25,16 @@ rethinkdb:connect <name>           Connect via telnet to a rethinkdb service
 rethinkdb:create <name>            Create a rethinkdb service
 rethinkdb:destroy <name>           Delete the service and stop its container if there are no links left
 rethinkdb:export <name>            NOT IMPLEMENTED
-rethinkdb:expose <name> <port>     NOT IMPLEMENTED
+rethinkdb:expose <name> [port]     Expose a rethinkdb service on custom port if provided (random port otherwise)
 rethinkdb:import <name> <file>     NOT IMPLEMENTED
 rethinkdb:info <name>              Print the connection information
 rethinkdb:link <name> <app>        Link the rethinkdb service to the app
 rethinkdb:list                     List all rethinkdb services
 rethinkdb:logs <name> [-t]         Print the most recent log(s) for this service
-rethinkdb:restart <name>           Graceful shutdown and restart of the service container
-rethinkdb:unexpose <name> <port>   NOT IMPLEMENTED
-rethinkdb:unlink <name> <app>      Unlink the rethinkdb service from the app
+rethinkdb:restart <name>           Graceful shutdown and restart of the rethinkdb service container
+rethinkdb:start <name>             Start a previously stopped rethinkdb service
+rethinkdb:stop <name>              Stop a running rethinkdb service
+rethinkdb:unexpose <name>          Unexpose a previously exposed rethinkdb service
 ```
 
 ## usage
@@ -65,7 +66,7 @@ dokku rethinkdb:link lolipop playground
 # the above will expose the following environment variables
 #
 #   RETHINKDB_URL=rethinkdb://172.17.0.1:28015
-#   RETHINKDB_NAME=/playground/DATABASE
+#   RETHINKDB_NAME=/lolipop/DATABASE
 #   RETHINKDB_PORT=tcp://172.17.0.1:28015
 #   RETHINKDB_PORT_28015_TCP=tcp://172.17.0.1:28015
 #   RETHINKDB_PORT_28015_TCP_PROTO=tcp
@@ -85,11 +86,10 @@ dokku rethinkdb:logs lolipop
 dokku rethinkdb:logs lolipop -t # to tail
 
 # finally, you can destroy the container
-dokku rethinkdb:destroy playground
+dokku rethinkdb:destroy lolipop
 ```
 
 ## todo
 
 - implement rethinkdb:clone
-- implement rethinkdb:expose
 - implement rethinkdb:import
