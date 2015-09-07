@@ -1,4 +1,4 @@
-# dokku rethinkdb (beta)
+# dokku rethinkdb (beta) [![Build Status](https://img.shields.io/travis/dokku/dokku-rethinkdb.svg "Build Status")](https://travis-ci.org/dokku/dokku-rethinkdb) [![IRC Network](https://img.shields.io/badge/irc-freenode-blue.svg "IRC Freenode")](https://webchat.freenode.net/?channels=dokku)
 
 Official rethinkdb plugin for dokku. Currently installs rethinkdb 2.1.1.
 
