@@ -21,5 +21,12 @@ teardown() {
 
 @test "($PLUGIN_COMMAND_PREFIX:info) success" {
   run dokku "$PLUGIN_COMMAND_PREFIX:info" l
-  assert_contains "${lines[*]}" "DSN: rethinkdb://172.17.0.34:28015"
+  assert_contains "${lines[*]}" "DSN: rethinkdb://dokku-rethinkdb-l:28015"
+}
+
+@test "($PLUGIN_COMMAND_PREFIX:info) replaces underscores by dash in hostname" {
+  dokku "$PLUGIN_COMMAND_PREFIX:create" test_with_underscores
+  run dokku "$PLUGIN_COMMAND_PREFIX:info" test_with_underscores
+  assert_contains "${lines[*]}" "DSN: rethinkdb://dokku-rethinkdb-test-with-underscores:28015"
+  dokku --force "$PLUGIN_COMMAND_PREFIX:destroy" test_with_underscores
 }
