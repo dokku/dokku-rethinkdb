@@ -76,6 +76,10 @@ dokku rethinkdb:link lolipop playground
 #   RETHINKDB_PORT_28015_TCP_PORT=28015
 #   RETHINKDB_PORT_28015_TCP_ADDR=172.17.0.1
 
+# you can examine the environment variables
+# using our 'playground' app's env command
+dokku run playground env
+
 # you can customize the environment
 # variables through a custom docker link alias
 dokku rethinkdb:alias lolipop RETHINKDB_DATABASE
