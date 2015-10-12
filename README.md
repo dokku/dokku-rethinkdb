@@ -22,7 +22,6 @@ dokku plugin:install https://github.com/dokku/dokku-rethinkdb.git rethinkdb
 ## commands
 
 ```
-rethinkdb:alias <name> <alias>     Set an alias for the docker link
 rethinkdb:clone <name> <new-name>  NOT IMPLEMENTED
 rethinkdb:connect <name>           Connect via telnet to a rethinkdb service
 rethinkdb:create <name>            Create a rethinkdb service
@@ -34,6 +33,7 @@ rethinkdb:info <name>              Print the connection information
 rethinkdb:link <name> <app>        Link the rethinkdb service to the app
 rethinkdb:list                     List all rethinkdb services
 rethinkdb:logs <name> [-t]         Print the most recent log(s) for this service
+rethinkdb:promote <name> <app>     Promote service <name> as RETHINKDB_URL in <app>
 rethinkdb:restart <name>           Graceful shutdown and restart of the rethinkdb service container
 rethinkdb:start <name>             Start a previously stopped rethinkdb service
 rethinkdb:stop <name>              Stop a running rethinkdb service
@@ -57,8 +57,6 @@ dokku rethinkdb:create lolipop
 # get connection information as follows
 dokku rethinkdb:info lolipop
 
-# lets assume the ip of our rethinkdb service is 172.17.0.1
-
 # a rethinkdb service can be linked to a
 # container this will use native docker
 # links via the docker-options plugin
@@ -68,24 +66,42 @@ dokku rethinkdb:link lolipop playground
 
 # the above will expose the following environment variables
 #
-#   RETHINKDB_URL=rethinkdb://172.17.0.1:28015
-#   RETHINKDB_NAME=/lolipop/DATABASE
-#   RETHINKDB_PORT=tcp://172.17.0.1:28015
-#   RETHINKDB_PORT_28015_TCP=tcp://172.17.0.1:28015
-#   RETHINKDB_PORT_28015_TCP_PROTO=tcp
-#   RETHINKDB_PORT_28015_TCP_PORT=28015
-#   RETHINKDB_PORT_28015_TCP_ADDR=172.17.0.1
+#   DOKKU_RETHINKDB_LOLIPOP_NAME=/lolipop/DATABASE
+#   DOKKU_RETHINKDB_LOLIPOP_PORT=tcp://172.17.0.1:28015
+#   DOKKU_RETHINKDB_LOLIPOP_PORT_28015_TCP=tcp://172.17.0.1:28015
+#   DOKKU_RETHINKDB_LOLIPOP_PORT_28015_TCP_PROTO=tcp
+#   DOKKU_RETHINKDB_LOLIPOP_PORT_28015_TCP_PORT=28015
+#   DOKKU_RETHINKDB_LOLIPOP_PORT_28015_TCP_ADDR=172.17.0.1
+#
+# and the following will be set on the linked application by default
+#
+#   RETHINKDB_URL=rethinkdb://dokku-rethinkdb-lolipop:28015
+#
+# NOTE: the host exposed here only works internally in docker containers. If
+# you want your container to be reachable from outside, you should use `expose`.
 
-# you can examine the environment variables
-# using our 'playground' app's env command
-dokku run playground env
+# another service can be linked to your app
+dokku rethinkdb:link other_service playground
 
-# you can customize the environment
-# variables through a custom docker link alias
-dokku rethinkdb:alias lolipop RETHINKDB_DATABASE
+# since RETHINKDB_URL is already in use, another environment variable will be
+# generated automatically
+#
+#   DOKKU_RETHINKDB_BLUE_URL=rethinkdb://dokku-rethinkdb-other-service:28015
 
-# you can also unlink a rethinkdb service
+# you can then promote the new service to be the primary one
 # NOTE: this will restart your app
+dokku rethinkdb:promote other_service playground
+
+# this will replace RETHINKDB_URL with the url from other_service and generate
+# another environment variable to hold the previous value if necessary.
+# you could end up with the following for example:
+#
+#   RETHINKDB_URL=rethinkdb://dokku-rethinkdb-other-service:28015
+#   DOKKU_RETHINKDB_BLUE_URL=rethinkdb://dokku-rethinkdb-other-service:28015
+#   DOKKU_RETHINKDB_SILVER_URL=rethinkdb://dokku-rethinkdb-lolipop:28015
+
+# you can also unlink an rethinkdb service
+# NOTE: this will restart your app and unset related environment variables
 dokku rethinkdb:unlink lolipop playground
 
 # you can tail logs for a particular service
