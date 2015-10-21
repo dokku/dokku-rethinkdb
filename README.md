@@ -64,7 +64,8 @@ dokku rethinkdb:info lolipop
 # NOTE: this will restart your app
 dokku rethinkdb:link lolipop playground
 
-# the above will expose the following environment variables
+# the following environment variables will be set automatically by docker (not
+# on the app itself, so they won’t be listed when calling dokku config)
 #
 #   DOKKU_RETHINKDB_LOLIPOP_NAME=/lolipop/DATABASE
 #   DOKKU_RETHINKDB_LOLIPOP_PORT=tcp://172.17.0.1:28015
