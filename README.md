@@ -26,7 +26,7 @@ rethinkdb:clone <name> <new-name>  NOT IMPLEMENTED
 rethinkdb:connect <name>           Connect via telnet to a rethinkdb service
 rethinkdb:create <name>            Create a rethinkdb service
 rethinkdb:destroy <name>           Delete the service and stop its container if there are no links left
-rethinkdb:export <name>            NOT IMPLEMENTED
+rethinkdb:export <name> > <file>   NOT IMPLEMENTED
 rethinkdb:expose <name> [port]     Expose a rethinkdb service on custom port if provided (random port otherwise)
 rethinkdb:import <name> <file>     NOT IMPLEMENTED
 rethinkdb:info <name>              Print the connection information
