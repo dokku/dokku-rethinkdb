@@ -24,7 +24,7 @@ dokku plugin:install https://github.com/dokku/dokku-rethinkdb.git rethinkdb
 ```
 rethinkdb:clone <name> <new-name>  NOT IMPLEMENTED
 rethinkdb:connect <name>           Connect via telnet to a rethinkdb service
-rethinkdb:create <name>            Create a rethinkdb service
+rethinkdb:create <name>            Create a rethinkdb service with environment variables
 rethinkdb:destroy <name>           Delete the service and stop its container if there are no links left
 rethinkdb:export <name> > <file>   NOT IMPLEMENTED
 rethinkdb:expose <name> [port]     Expose a rethinkdb service on custom port if provided (random port otherwise)
@@ -52,6 +52,13 @@ dokku rethinkdb:create lolipop
 # official rethinkdb image
 export RETHINKDB_IMAGE="rethinkdb"
 export RETHINKDB_IMAGE_VERSION="2.0.4"
+
+# you can also specify custom environment
+# variables to start the rethinkdb service
+# in semi-colon separated forma
+export RETHINKDB_CUSTOM_ENV="USER=alpha;HOST=beta"
+
+# create a rethinkdb service
 dokku rethinkdb:create lolipop
 
 # get connection information as follows
