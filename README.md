@@ -38,6 +38,7 @@ rethinkdb:restart <name>           Graceful shutdown and restart of the rethinkd
 rethinkdb:start <name>             Start a previously stopped rethinkdb service
 rethinkdb:stop <name>              Stop a running rethinkdb service
 rethinkdb:unexpose <name>          Unexpose a previously exposed rethinkdb service
+rethinkdb:unlink <name> <app>      Unlink the rethinkdb service from the app
 ```
 
 ## usage
