@@ -121,6 +121,33 @@ dokku rethinkdb:logs lolipop -t # to tail
 dokku rethinkdb:destroy lolipop
 ```
 
+## Changing database adapter
+
+It's possible to change the protocol for DATABASE_URL by setting
+the environment variable RETHINKDB_DATABASE_SCHEME on the app:
+
+```
+dokku config:set playground RETHINKDB_DATABASE_SCHEME=rethinkdb2
+dokku rethinkdb:link lolipop playground
+```
+
+Will cause RETHINKDB_URL to be set as
+rethinkdb2://lolipop:SOME_PASSWORD@dokku-rethinkdb-lolipop:28015
+
+CAUTION: Changing RETHINKDB_DATABASE_SCHEME after linking will cause dokku to
+believe the rethinkdb is not linked when attempting to use `dokku rethinkdb:unlink`
+or `dokku rethinkdb:promote`.
+You should be able to fix this by
+
+- Changing RETHINKDB_URL manually to the new value.
+
+OR
+
+- Set RETHINKDB_DATABASE_SCHEME back to its original setting
+- Unlink the service
+- Change RETHINKDB_DATABASE_SCHEME to the desired setting
+- Relink the service
+
 ## todo
 
 - implement rethinkdb:clone

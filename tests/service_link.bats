@@ -58,3 +58,11 @@ teardown() {
   assert_contains "${lines[*]}" "--link dokku.rethinkdb.l:dokku-rethinkdb-l"
   dokku "$PLUGIN_COMMAND_PREFIX:unlink" l my_app
 }
+
+@test "($PLUGIN_COMMAND_PREFIX:link) uses apps RETHINKDB_DATABASE_SCHEME variable" {
+  dokku config:set my_app RETHINKDB_DATABASE_SCHEME=rethinkdb2
+  dokku "$PLUGIN_COMMAND_PREFIX:link" l my_app
+  url=$(dokku config:get my_app RETHINKDB_URL)
+  assert_contains "$url" "rethinkdb2://dokku-rethinkdb-l:28015"
+  dokku "$PLUGIN_COMMAND_PREFIX:unlink" l my_app
+}
