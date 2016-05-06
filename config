@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 export RETHINKDB_IMAGE=${RETHINKDB_IMAGE:="rethinkdb"}
-export RETHINKDB_IMAGE_VERSION=${RETHINKDB_IMAGE_VERSION:="2.2.3"}
+export RETHINKDB_IMAGE_VERSION=${RETHINKDB_IMAGE_VERSION:="2.3.2"}
 export RETHINKDB_ROOT=${RETHINKDB_ROOT:="/var/lib/dokku/services/rethinkdb"}
 
 export PLUGIN_COMMAND_PREFIX="rethinkdb"
