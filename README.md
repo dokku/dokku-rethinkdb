@@ -11,7 +11,7 @@ Official rethinkdb plugin for dokku. Currently defaults to installing [rethinkdb
 
 ```shell
 # on 0.4.x+
-dokku plugin:install https://github.com/dokku/dokku-rethinkdb.git rethinkdb
+sudo dokku plugin:install https://github.com/dokku/dokku-rethinkdb.git rethinkdb
 ```
 
 ## commands
