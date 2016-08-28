@@ -48,17 +48,25 @@ dokku rethinkdb:create lolipop
 # official rethinkdb image
 export RETHINKDB_IMAGE="rethinkdb"
 export RETHINKDB_IMAGE_VERSION="2.0.4"
+dokku rethinkdb:create lolipop
 
 # you can also specify custom environment
 # variables to start the rethinkdb service
 # in semi-colon separated forma
 export RETHINKDB_CUSTOM_ENV="USER=alpha;HOST=beta"
-
-# create a rethinkdb service
 dokku rethinkdb:create lolipop
 
 # get connection information as follows
 dokku rethinkdb:info lolipop
+
+# you can also retrieve a specific piece of service info via flags
+dokku rethinkdb:info lolipop --config-dir
+dokku rethinkdb:info lolipop --data-dir
+dokku rethinkdb:info lolipop --dsn
+dokku rethinkdb:info lolipop --exposed-ports
+dokku rethinkdb:info lolipop --links
+dokku rethinkdb:info lolipop --status
+dokku rethinkdb:info lolipop --version
 
 # a rethinkdb service can be linked to a
 # container this will use native docker
