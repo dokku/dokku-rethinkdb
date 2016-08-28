@@ -64,6 +64,7 @@ dokku rethinkdb:info lolipop --config-dir
 dokku rethinkdb:info lolipop --data-dir
 dokku rethinkdb:info lolipop --dsn
 dokku rethinkdb:info lolipop --exposed-ports
+dokku rethinkdb:info lolipop --id
 dokku rethinkdb:info lolipop --links
 dokku rethinkdb:info lolipop --status
 dokku rethinkdb:info lolipop --version
