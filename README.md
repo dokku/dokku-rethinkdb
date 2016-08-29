@@ -67,6 +67,7 @@ dokku rethinkdb:info lolipop --exposed-ports
 dokku rethinkdb:info lolipop --id
 dokku rethinkdb:info lolipop --internal-ip
 dokku rethinkdb:info lolipop --links
+dokku rethinkdb:info lolipop --service-root
 dokku rethinkdb:info lolipop --status
 dokku rethinkdb:info lolipop --version
 
