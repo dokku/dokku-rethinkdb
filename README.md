@@ -167,8 +167,3 @@ OR
 - Unlink the service
 - Change RETHINKDB_DATABASE_SCHEME to the desired setting
 - Relink the service
-
-## todo
-
-- implement rethinkdb:clone
-- implement rethinkdb:import
