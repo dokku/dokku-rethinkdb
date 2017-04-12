@@ -104,7 +104,7 @@ dokku rethinkdb:link lolipop playground
 #
 # and the following will be set on the linked application by default
 #
-#   RETHINKDB_URL=rethinkdb://dokku-rethinkdb-lolipop:28015
+#   RETHINKDB_URL=rethinkdb://dokku-rethinkdb-lolipop:28015/lolipop
 #
 # NOTE: the host exposed here only works internally in docker containers. If
 # you want your container to be reachable from outside, you should use `expose`.
@@ -115,7 +115,7 @@ dokku rethinkdb:link other_service playground
 # since RETHINKDB_URL is already in use, another environment variable will be
 # generated automatically
 #
-#   DOKKU_RETHINKDB_BLUE_URL=rethinkdb://dokku-rethinkdb-other-service:28015
+#   DOKKU_RETHINKDB_BLUE_URL=rethinkdb://dokku-rethinkdb-other-service:28015/other_service
 
 # you can then promote the new service to be the primary one
 # NOTE: this will restart your app
@@ -125,9 +125,9 @@ dokku rethinkdb:promote other_service playground
 # another environment variable to hold the previous value if necessary.
 # you could end up with the following for example:
 #
-#   RETHINKDB_URL=rethinkdb://dokku-rethinkdb-other-service:28015
-#   DOKKU_RETHINKDB_BLUE_URL=rethinkdb://dokku-rethinkdb-other-service:28015
-#   DOKKU_RETHINKDB_SILVER_URL=rethinkdb://dokku-rethinkdb-lolipop:28015
+#   RETHINKDB_URL=rethinkdb://dokku-rethinkdb-other-service:28015/other_service
+#   DOKKU_RETHINKDB_BLUE_URL=rethinkdb://dokku-rethinkdb-other-service:28015/other_service
+#   DOKKU_RETHINKDB_SILVER_URL=rethinkdb://dokku-rethinkdb-lolipop:28015/other_service
 
 # you can also unlink an rethinkdb service
 # NOTE: this will restart your app and unset related environment variables
@@ -152,7 +152,7 @@ dokku rethinkdb:link lolipop playground
 ```
 
 Will cause RETHINKDB_URL to be set as
-rethinkdb2://lolipop:SOME_PASSWORD@dokku-rethinkdb-lolipop:28015
+rethinkdb2://lolipop:SOME_PASSWORD@dokku-rethinkdb-lolipop:28015/lolipop
 
 CAUTION: Changing RETHINKDB_DATABASE_SCHEME after linking will cause dokku to
 believe the rethinkdb is not linked when attempting to use `dokku rethinkdb:unlink`
