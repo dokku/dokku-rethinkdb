@@ -33,7 +33,7 @@ teardown() {
 
 @test "($PLUGIN_COMMAND_PREFIX:info) success with flag" {
   run dokku "$PLUGIN_COMMAND_PREFIX:info" l --dsn
-  assert_output "rethinkdb://dokku-rethinkdb-l:28015"
+  assert_output "rethinkdb://dokku-rethinkdb-l:28015/l"
 
   run dokku "$PLUGIN_COMMAND_PREFIX:info" l --config-dir
   assert_success

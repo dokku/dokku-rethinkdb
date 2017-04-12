@@ -39,22 +39,22 @@ teardown() {
 }
 
 @test "($PLUGIN_COMMAND_PREFIX:promote) changes RETHINKDB_URL" {
-  dokku config:set my_app "RETHINKDB_URL=rethinkdb://host:28015" "DOKKU_RETHINKDB_BLUE_URL=rethinkdb://dokku-rethinkdb-l:28015"
+  dokku config:set my_app "RETHINKDB_URL=rethinkdb://host:28015" "DOKKU_RETHINKDB_BLUE_URL=rethinkdb://dokku-rethinkdb-l:28015/l"
   dokku "$PLUGIN_COMMAND_PREFIX:promote" l my_app
   url=$(dokku config:get my_app RETHINKDB_URL)
-  assert_equal "$url" "rethinkdb://dokku-rethinkdb-l:28015"
+  assert_equal "$url" "rethinkdb://dokku-rethinkdb-l:28015/l"
 }
 
 @test "($PLUGIN_COMMAND_PREFIX:promote) creates new config url when needed" {
-  dokku config:set my_app "RETHINKDB_URL=rethinkdb://host:28015" "DOKKU_RETHINKDB_BLUE_URL=rethinkdb://dokku-rethinkdb-l:28015"
+  dokku config:set my_app "RETHINKDB_URL=rethinkdb://host:28015" "DOKKU_RETHINKDB_BLUE_URL=rethinkdb://dokku-rethinkdb-l:28015/l"
   dokku "$PLUGIN_COMMAND_PREFIX:promote" l my_app
   run dokku config my_app
   assert_contains "${lines[*]}" "DOKKU_RETHINKDB_"
 }
 
 @test "($PLUGIN_COMMAND_PREFIX:promote) uses RETHINKDB_DATABASE_SCHEME variable" {
-  dokku config:set my_app "RETHINKDB_DATABASE_SCHEME=rethinkdb2" "RETHINKDB_URL=rethinkdb://u:p@host:28015" "DOKKU_RETHINKDB_BLUE_URL=rethinkdb2://dokku-rethinkdb-l:28015"
+  dokku config:set my_app "RETHINKDB_DATABASE_SCHEME=rethinkdb2" "RETHINKDB_URL=rethinkdb://u:p@host:28015" "DOKKU_RETHINKDB_BLUE_URL=rethinkdb2://dokku-rethinkdb-l:28015/l"
   dokku "$PLUGIN_COMMAND_PREFIX:promote" l my_app
   url=$(dokku config:get my_app RETHINKDB_URL)
-  assert_equal "$url" "rethinkdb2://dokku-rethinkdb-l:28015"
+  assert_equal "$url" "rethinkdb2://dokku-rethinkdb-l:28015/l"
 }
