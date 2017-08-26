@@ -25,7 +25,7 @@ rethinkdb:backup-unschedule <name> NOT IMPLEMENTED
 rethinkdb:clone <name> <new-name>  NOT IMPLEMENTED
 rethinkdb:connect <name>           Connect via telnet to a rethinkdb service
 rethinkdb:create <name>            Create a rethinkdb service with environment variables
-rethinkdb:destroy <name>           Delete the service and stop its container if there are no links left
+rethinkdb:destroy <name>           Delete the service, delete the data and stop its container if there are no links left
 rethinkdb:enter <name> [command]   Enter or run a command in a running rethinkdb service container
 rethinkdb:export <name> > <file>   NOT IMPLEMENTED
 rethinkdb:expose <name> [port]     Expose a rethinkdb service on custom port if provided (random port otherwise)
