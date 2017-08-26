@@ -17,7 +17,7 @@ sudo dokku plugin:install https://github.com/dokku/dokku-rethinkdb.git rethinkdb
 ## commands
 
 ```
-rethinkdb:backup <name> <bucket>   NOT IMPLEMENTED
+rethinkdb:backup <name> <bucket> [--use-iam] NOT IMPLEMENTED
 rethinkdb:backup-auth <name> <aws_access_key_id> <aws_secret_access_key> (<aws_default_region>) (<aws_signature_version>) (<endpoint_url>) NOT IMPLEMENTED
 rethinkdb:backup-deauth <name>     NOT IMPLEMENTED
 rethinkdb:backup-schedule <name> <schedule> <bucket> NOT IMPLEMENTED
@@ -58,7 +58,7 @@ dokku rethinkdb:create lolipop
 
 # you can also specify custom environment
 # variables to start the rethinkdb service
-# in semi-colon separated forma
+# in semi-colon separated form
 export RETHINKDB_CUSTOM_ENV="USER=alpha;HOST=beta"
 dokku rethinkdb:create lolipop
 
