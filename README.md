@@ -18,7 +18,7 @@ sudo dokku plugin:install https://github.com/dokku/dokku-rethinkdb.git rethinkdb
 
 ```
 rethinkdb:backup <name> <bucket>   NOT IMPLEMENTED
-rethinkdb:backup-auth <name> <aws_access_key_id> <aws_secret_access_key> NOT IMPLEMENTED
+rethinkdb:backup-auth <name> <aws_access_key_id> <aws_secret_access_key> (<aws_default_region>) (<aws_signature_version>) (<endpoint_url>) NOT IMPLEMENTED
 rethinkdb:backup-deauth <name>     NOT IMPLEMENTED
 rethinkdb:backup-schedule <name> <schedule> <bucket> NOT IMPLEMENTED
 rethinkdb:backup-unschedule <name> NOT IMPLEMENTED
