@@ -29,11 +29,13 @@ rethinkdb:connect <name>           Connect via telnet to a rethinkdb service
 rethinkdb:create <name>            Create a rethinkdb service with environment variables
 rethinkdb:destroy <name>           Delete the service, delete the data and stop its container if there are no links left
 rethinkdb:enter <name> [command]   Enter or run a command in a running rethinkdb service container
+rethinkdb:exists <service>         Check if the rethinkdb service exists
 rethinkdb:export <name> > <file>   NOT IMPLEMENTED
 rethinkdb:expose <name> [port]     Expose a rethinkdb service on custom port if provided (random port otherwise)
 rethinkdb:import <name> <file>     NOT IMPLEMENTED
 rethinkdb:info <name>              Print the connection information
 rethinkdb:link <name> <app>        Link the rethinkdb service to the app
+rethinkdb:linked <name> <app>      Check if the rethinkdb service is linked to an app
 rethinkdb:list                     List all rethinkdb services
 rethinkdb:logs <name> [-t]         Print the most recent log(s) for this service
 rethinkdb:promote <name> <app>     Promote service <name> as RETHINKDB_URL in <app>
