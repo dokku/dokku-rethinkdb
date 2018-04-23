@@ -21,9 +21,10 @@ rethinkdb:backup <name> <bucket> (--use-iam) NOT IMPLEMENTED
 rethinkdb:backup-auth <name> <aws_access_key_id> <aws_secret_access_key> (<aws_default_region>) (<aws_signature_version>) (<endpoint_url>) NOT IMPLEMENTED
 rethinkdb:backup-deauth <name>     NOT IMPLEMENTED
 rethinkdb:backup-schedule <name> <schedule> <bucket> NOT IMPLEMENTED
-rethinkdb:backup-set-encryption <name> <encryption_key>, NOT IMPLEMENTED
+rethinkdb:backup-schedule-cat <name> NOT IMPLEMENTED
+rethinkdb:backup-set-encryption <name> <encryption_key> NOT IMPLEMENTED
 rethinkdb:backup-unschedule <name> NOT IMPLEMENTED
-rethinkdb:backup-unset-encryption <name>, NOT IMPLEMENTED
+rethinkdb:backup-unset-encryption <name> NOT IMPLEMENTED
 rethinkdb:clone <name> <new-name>  NOT IMPLEMENTED
 rethinkdb:connect <name>           Connect via telnet to a rethinkdb service
 rethinkdb:create <name>            Create a rethinkdb service with environment variables
