@@ -73,3 +73,10 @@ teardown() {
   assert_contains "$url" "?pool=5"
   dokku "$PLUGIN_COMMAND_PREFIX:unlink" l my_app
 }
+
+@test "($PLUGIN_COMMAND_PREFIX:link) uses a specified config url when alias is specified" {
+  dokku "$PLUGIN_COMMAND_PREFIX:link" l my_app --alias "ALIAS"
+  url=$(dokku config:get my_app ALIAS_URL)
+  assert_contains "$url" "rethinkdb://dokku-rethinkdb-l:28015"
+  dokku "$PLUGIN_COMMAND_PREFIX:unlink" l my_app
+}
