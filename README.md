@@ -46,6 +46,7 @@ rethinkdb:start <name>             Start a previously stopped rethinkdb service
 rethinkdb:stop <name>              Stop a running rethinkdb service
 rethinkdb:unexpose <name>          Unexpose a previously exposed rethinkdb service
 rethinkdb:unlink <name> <app>      Unlink the rethinkdb service from the app
+rethinkdb:upgrade <name>           Upgrade service <service> to the specified version
 ```
 
 ## usage
