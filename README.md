@@ -23,7 +23,7 @@ rethinkdb:backup-auth <name> <aws_access_key_id> <aws_secret_access_key> (<aws_d
 rethinkdb:backup-deauth <name>     NOT IMPLEMENTED
 rethinkdb:backup-schedule <name> <schedule> <bucket> NOT IMPLEMENTED
 rethinkdb:backup-schedule-cat <name> NOT IMPLEMENTED
-rethinkdb:backup-set-encryption <name> <encryption_key> NOT IMPLEMENTED
+rethinkdb:backup-set-encryption <name> <passphrase> NOT IMPLEMENTED
 rethinkdb:backup-unschedule <name> NOT IMPLEMENTED
 rethinkdb:backup-unset-encryption <name> NOT IMPLEMENTED
 rethinkdb:clone <name> <new-name>  NOT IMPLEMENTED
