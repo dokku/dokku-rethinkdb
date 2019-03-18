@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 export RETHINKDB_IMAGE=${RETHINKDB_IMAGE:="rethinkdb"}
 export RETHINKDB_IMAGE_VERSION=${RETHINKDB_IMAGE_VERSION:="2.3.4"}
-export RETHINKDB_ROOT=${RETHINKDB_ROOT:="/var/lib/dokku/services/rethinkdb"}
+export RETHINKDB_ROOT=${RETHINKDB_ROOT:="$DOKKU_LIB_ROOT/services/rethinkdb"}
 export RETHINKDB_HOST_ROOT=${RETHINKDB_HOST_ROOT:=$RETHINKDB_ROOT}
 
 export PLUGIN_UNIMPLEMENTED_SUBCOMMANDS=("backup" "backup-auth" "backup-deauth" "backup-schedule" "backup-schedule-cat" "backup-set-encryption" "backup-unschedule" "backup-unset-encryption" "clone" "export" "import")
