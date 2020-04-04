@@ -2,77 +2,120 @@
 
 Official rethinkdb plugin for dokku. Currently defaults to installing [rethinkdb 2.3.6](https://hub.docker.com/_/rethinkdb/).
 
-## requirements
+## Requirements
 
 - dokku 0.12.x+
 - docker 1.8.x
 
-## installation
+## Installation
 
 ```shell
 # on 0.12.x+
 sudo dokku plugin:install https://github.com/dokku/dokku-rethinkdb.git rethinkdb
 ```
 
-## commands
+## Commands
 
 ```
-rethinkdb:app-links <app>          List all rethinkdb service links for a given app
-rethinkdb:backup <name> <bucket> (--use-iam) NOT IMPLEMENTED
-rethinkdb:backup-auth <name> <aws_access_key_id> <aws_secret_access_key> (<aws_default_region>) (<aws_signature_version>) (<endpoint_url>) NOT IMPLEMENTED
-rethinkdb:backup-deauth <name>     NOT IMPLEMENTED
-rethinkdb:backup-schedule <name> <schedule> <bucket> NOT IMPLEMENTED
-rethinkdb:backup-schedule-cat <name> NOT IMPLEMENTED
-rethinkdb:backup-set-encryption <name> <passphrase> NOT IMPLEMENTED
-rethinkdb:backup-unschedule <name> NOT IMPLEMENTED
-rethinkdb:backup-unset-encryption <name> NOT IMPLEMENTED
-rethinkdb:clone <name> <new-name>  NOT IMPLEMENTED
-rethinkdb:connect <name>           Connect via telnet to a rethinkdb service
-rethinkdb:create <name>            Create a rethinkdb service with environment variables
-rethinkdb:destroy <name>           Delete the service, delete the data and stop its container if there are no links left
-rethinkdb:enter <name> [command]   Enter or run a command in a running rethinkdb service container
-rethinkdb:exists <service>         Check if the rethinkdb service exists
-rethinkdb:export <name> > <file>   NOT IMPLEMENTED
-rethinkdb:expose <name> [port]     Expose a rethinkdb service on custom port if provided (random port otherwise)
-rethinkdb:import <name> <file>     NOT IMPLEMENTED
-rethinkdb:info <name>              Print the connection information
-rethinkdb:link <name> <app>        Link the rethinkdb service to the app
-rethinkdb:linked <name> <app>      Check if the rethinkdb service is linked to an app
-rethinkdb:list                     List all rethinkdb services
-rethinkdb:logs <name> [-t]         Print the most recent log(s) for this service
-rethinkdb:promote <name> <app>     Promote service <name> as RETHINKDB_URL in <app>
-rethinkdb:restart <name>           Graceful shutdown and restart of the rethinkdb service container
-rethinkdb:start <name>             Start a previously stopped rethinkdb service
-rethinkdb:stop <name>              Stop a running rethinkdb service
-rethinkdb:unexpose <name>          Unexpose a previously exposed rethinkdb service
-rethinkdb:unlink <name> <app>      Unlink the rethinkdb service from the app
-rethinkdb:upgrade <name>           Upgrade service <service> to the specified version
+rethinkdb:app-links <app>                          # list all rethinkdb service links for a given app
+rethinkdb:backup <service> <bucket-name> [--use-iam] # creates a backup of the rethinkdb service to an existing s3 bucket
+rethinkdb:backup-auth <service> <aws-access-key-id> <aws-secret-access-key> <aws-default-region> <aws-signature-version> <endpoint-url> # sets up authentication for backups on the rethinkdb service
+rethinkdb:backup-deauth <service>                  # removes backup authentication for the rethinkdb service
+rethinkdb:backup-schedule <service> <schedule> <bucket-name> [--use-iam] # schedules a backup of the rethinkdb service
+rethinkdb:backup-schedule-cat <service>            # cat the contents of the configured backup cronfile for the service
+rethinkdb:backup-set-encryption <service> <passphrase> # sets encryption for all future backups of rethinkdb service
+rethinkdb:backup-unschedule <service>              # unschedules the backup of the rethinkdb service
+rethinkdb:backup-unset-encryption <service>        # unsets encryption for future backups of the rethinkdb service
+rethinkdb:clone <service> <new-service> [--clone-flags...] # create container <new-name> then copy data from <name> into <new-name>
+rethinkdb:connect <service>                        # connect to the service via the rethinkdb connection tool
+rethinkdb:create <service> [--create-flags...]     # create a rethinkdb service
+rethinkdb:destroy <service> [-f|--force]           # delete the rethinkdb service/data/container if there are no links left
+rethinkdb:enter <service>                          # enter or run a command in a running rethinkdb service container
+rethinkdb:exists <service>                         # check if the rethinkdb service exists
+rethinkdb:export <service>                         # export a dump of the rethinkdb service database
+rethinkdb:expose <service> <ports...>              # expose a rethinkdb service on custom port if provided (random port otherwise)
+rethinkdb:import <service>                         # import a dump into the rethinkdb service database
+rethinkdb:info <service> [--single-info-flag]      # print the connection information
+rethinkdb:link <service> <app> [--link-flags...]   # link the rethinkdb service to the app
+rethinkdb:linked <service> <app>                   # check if the rethinkdb service is linked to an app
+rethinkdb:links <service>                          # list all apps linked to the rethinkdb service
+rethinkdb:list                                     # list all rethinkdb services
+rethinkdb:logs <service> [-t|--tail]               # print the most recent log(s) for this service
+rethinkdb:promote <service> <app>                  # promote service <service> as RETHINKDB_URL in <app>
+rethinkdb:restart <service>                        # graceful shutdown and restart of the rethinkdb service container
+rethinkdb:start <service>                          # start a previously stopped rethinkdb service
+rethinkdb:stop <service>                           # stop a running rethinkdb service
+rethinkdb:unexpose <service>                       # unexpose a previously exposed rethinkdb service
+rethinkdb:unlink <service> <app>                   # unlink the rethinkdb service from the app
+rethinkdb:upgrade <service> [--upgrade-flags...]   # upgrade service <service> to the specified versions
 ```
 
-## usage
+## Usage
+
+Help for any commands can be displayed by specifying the command as an argument to rethinkdb:help. Please consult the `rethinkdb:help` command for any undocumented commands.
+
+### Basic Usage
+### list all rethinkdb services
 
 ```shell
-# create a rethinkdb service named lolipop
-dokku rethinkdb:create lolipop
+# usage
+dokku rethinkdb:list 
+```
 
-# you can also specify the image and image
-# version to use for the service
-# it *must* be compatible with the
-# official rethinkdb image
-export RETHINKDB_IMAGE="rethinkdb"
-export RETHINKDB_IMAGE_VERSION="2.0.4"
-dokku rethinkdb:create lolipop
+examples:
 
-# you can also specify custom environment
-# variables to start the rethinkdb service
-# in semi-colon separated form
+List all services:
+
+```shell
+dokku rethinkdb:list
+```
+### create a rethinkdb service
+
+```shell
+# usage
+dokku rethinkdb:create <service> [--create-flags...]
+```
+
+examples:
+
+Create a rethinkdb service named lolipop:
+
+```shell
+dokku rethinkdb:create lolipop
+```
+
+You can also specify the image and image version to use for the service. It *must* be compatible with the ${plugin_image} image. :
+
+```shell
+export RETHINKDB_IMAGE="${PLUGIN_IMAGE}"
+export RETHINKDB_IMAGE_VERSION="${PLUGIN_IMAGE_VERSION}"
+dokku rethinkdb:create lolipop
+```
+
+You can also specify custom environment variables to start the rethinkdb service in semi-colon separated form. :
+
+```shell
 export RETHINKDB_CUSTOM_ENV="USER=alpha;HOST=beta"
 dokku rethinkdb:create lolipop
+```
+### print the connection information
 
-# get connection information as follows
+```shell
+# usage
+dokku rethinkdb:info <service> [--single-info-flag]
+```
+
+examples:
+
+Get connection information as follows:
+
+```shell
 dokku rethinkdb:info lolipop
+```
 
-# you can also retrieve a specific piece of service info via flags
+You can also retrieve a specific piece of service info via flags:
+
+```shell
 dokku rethinkdb:info lolipop --config-dir
 dokku rethinkdb:info lolipop --data-dir
 dokku rethinkdb:info lolipop --dsn
@@ -83,99 +126,525 @@ dokku rethinkdb:info lolipop --links
 dokku rethinkdb:info lolipop --service-root
 dokku rethinkdb:info lolipop --status
 dokku rethinkdb:info lolipop --version
+```
+### print the most recent log(s) for this service
 
-# a bash prompt can be opened against a running service
-# filesystem changes will not be saved to disk
-dokku rethinkdb:enter lolipop
+```shell
+# usage
+dokku rethinkdb:logs <service> [-t|--tail]
+```
 
-# you may also run a command directly against the service
-# filesystem changes will not be saved to disk
-dokku rethinkdb:enter lolipop ls -lah /
+examples:
 
-# a rethinkdb service can be linked to a
-# container this will use native docker
-# links via the docker-options plugin
-# here we link it to our 'playground' app
-# NOTE: this will restart your app
-dokku rethinkdb:link lolipop playground
+You can tail logs for a particular service:
 
-# the following environment variables will be set automatically by docker (not
-# on the app itself, so they won’t be listed when calling dokku config)
-#
-#   DOKKU_RETHINKDB_LOLIPOP_NAME=/lolipop/DATABASE
-#   DOKKU_RETHINKDB_LOLIPOP_PORT=tcp://172.17.0.1:28015
-#   DOKKU_RETHINKDB_LOLIPOP_PORT_28015_TCP=tcp://172.17.0.1:28015
-#   DOKKU_RETHINKDB_LOLIPOP_PORT_28015_TCP_PROTO=tcp
-#   DOKKU_RETHINKDB_LOLIPOP_PORT_28015_TCP_PORT=28015
-#   DOKKU_RETHINKDB_LOLIPOP_PORT_28015_TCP_ADDR=172.17.0.1
-#
-# and the following will be set on the linked application by default
-#
-#   RETHINKDB_URL=rethinkdb://dokku-rethinkdb-lolipop:28015/lolipop
-#
-# NOTE: the host exposed here only works internally in docker containers. If
-# you want your container to be reachable from outside, you should use `expose`.
-
-# another service can be linked to your app
-dokku rethinkdb:link other_service playground
-
-# since RETHINKDB_URL is already in use, another environment variable will be
-# generated automatically
-#
-#   DOKKU_RETHINKDB_BLUE_URL=rethinkdb://dokku-rethinkdb-other-service:28015/other_service
-
-# you can then promote the new service to be the primary one
-# NOTE: this will restart your app
-dokku rethinkdb:promote other_service playground
-
-# this will replace RETHINKDB_URL with the url from other_service and generate
-# another environment variable to hold the previous value if necessary.
-# you could end up with the following for example:
-#
-#   RETHINKDB_URL=rethinkdb://dokku-rethinkdb-other-service:28015/other_service
-#   DOKKU_RETHINKDB_BLUE_URL=rethinkdb://dokku-rethinkdb-other-service:28015/other_service
-#   DOKKU_RETHINKDB_SILVER_URL=rethinkdb://dokku-rethinkdb-lolipop:28015/other_service
-
-# you can also unlink an rethinkdb service
-# NOTE: this will restart your app and unset related environment variables
-dokku rethinkdb:unlink lolipop playground
-
-# you can tail logs for a particular service
+```shell
 dokku rethinkdb:logs lolipop
-dokku rethinkdb:logs lolipop -t # to tail
-
-# finally, you can destroy the container
-dokku rethinkdb:destroy lolipop
 ```
 
-## Changing database adapter
+By default, logs will not be tailed, but you can do this with the --tail flag:
 
-It's possible to change the protocol for DATABASE_URL by setting
-the environment variable RETHINKDB_DATABASE_SCHEME on the app:
+```shell
+dokku rethinkdb:logs lolipop --tail
+```
+### link the rethinkdb service to the app
+
+```shell
+# usage
+dokku rethinkdb:link <service> <app> [--link-flags...]
+```
+
+examples:
+
+A rethinkdb service can be linked to a container. This will use native docker links via the docker-options plugin. Here we link it to our 'playground' app. :
+
+> NOTE: this will restart your app
+
+```shell
+dokku rethinkdb:link lolipop playground
+```
+
+The following environment variables will be set automatically by docker (not on the app itself, so they won’t be listed when calling dokku config):
 
 ```
+DOKKU_RETHINKDB_LOLIPOP_NAME=/lolipop/DATABASE
+DOKKU_RETHINKDB_LOLIPOP_PORT=tcp://172.17.0.1:28015
+DOKKU_RETHINKDB_LOLIPOP_PORT_28015_TCP=tcp://172.17.0.1:28015
+DOKKU_RETHINKDB_LOLIPOP_PORT_28015_TCP_PROTO=tcp
+DOKKU_RETHINKDB_LOLIPOP_PORT_28015_TCP_PORT=28015
+DOKKU_RETHINKDB_LOLIPOP_PORT_28015_TCP_ADDR=172.17.0.1
+```
+
+The following will be set on the linked application by default:
+
+```
+RETHINKDB_URL=rethinkdb://lolipop:SOME_PASSWORD@dokku-rethinkdb-lolipop:28015/lolipop
+```
+
+The host exposed here only works internally in docker containers. If you want your container to be reachable from outside, you should use the 'expose' subcommand. Another service can be linked to your app:
+
+```shell
+dokku rethinkdb:link other_service playground
+```
+
+It is possible to change the protocol for rethinkdb_url by setting the environment variable rethinkdb_database_scheme on the app. Doing so will after linking will cause the plugin to think the service is not linked, and we advise you to unlink before proceeding. :
+
+```shell
 dokku config:set playground RETHINKDB_DATABASE_SCHEME=rethinkdb2
 dokku rethinkdb:link lolipop playground
 ```
 
-Will cause RETHINKDB_URL to be set as
+This will cause rethinkdb_url to be set as:
+
+```
 rethinkdb2://lolipop:SOME_PASSWORD@dokku-rethinkdb-lolipop:28015/lolipop
+```
+### unlink the rethinkdb service from the app
 
-CAUTION: Changing RETHINKDB_DATABASE_SCHEME after linking will cause dokku to
-believe the rethinkdb is not linked when attempting to use `dokku rethinkdb:unlink`
-or `dokku rethinkdb:promote`.
-You should be able to fix this by
+```shell
+# usage
+dokku rethinkdb:unlink <service> <app>
+```
 
-- Changing RETHINKDB_URL manually to the new value.
+examples:
 
-OR
+You can unlink a rethinkdb service:
 
-- Set RETHINKDB_DATABASE_SCHEME back to its original setting
-- Unlink the service
-- Change RETHINKDB_DATABASE_SCHEME to the desired setting
-- Relink the service
+> NOTE: this will restart your app and unset related environment variables
 
-## Disabling `docker pull` calls
+```shell
+dokku rethinkdb:unlink lolipop playground
+```
+### delete the rethinkdb service/data/container if there are no links left
+
+```shell
+# usage
+dokku rethinkdb:destroy <service> [-f|--force]
+```
+
+examples:
+
+Destroy the service, it's data, and the running container:
+
+```shell
+dokku rethinkdb:destroy lolipop
+```
+
+### Service Lifecycle
+
+The lifecycle of each service can be managed through the following commands:
+
+### connect to the service via the rethinkdb connection tool
+
+```shell
+# usage
+dokku rethinkdb:connect <service>
+```
+
+examples:
+
+Connect to the service via the rethinkdb connection tool:
+
+```shell
+dokku rethinkdb:connect lolipop
+```
+### enter or run a command in a running rethinkdb service container
+
+```shell
+# usage
+dokku rethinkdb:enter <service>
+```
+
+examples:
+
+A bash prompt can be opened against a running service. Filesystem changes will not be saved to disk. :
+
+```shell
+dokku rethinkdb:enter lolipop
+```
+
+You may also run a command directly against the service. Filesystem changes will not be saved to disk. :
+
+```shell
+dokku rethinkdb:enter lolipop touch /tmp/test
+```
+### expose a rethinkdb service on custom port if provided (random port otherwise)
+
+```shell
+# usage
+dokku rethinkdb:expose <service> <ports...>
+```
+
+examples:
+
+Expose the service on the service's normal ports, allowing access to it from the public interface (0. 0. 0. 0):
+
+```shell
+dokku rethinkdb:expose lolipop ${PLUGIN_DATASTORE_PORTS[@]}
+```
+### unexpose a previously exposed rethinkdb service
+
+```shell
+# usage
+dokku rethinkdb:unexpose <service>
+```
+
+examples:
+
+Unexpose the service, removing access to it from the public interface (0. 0. 0. 0):
+
+```shell
+dokku rethinkdb:unexpose lolipop
+```
+### promote service <service> as RETHINKDB_URL in <app>
+
+```shell
+# usage
+dokku rethinkdb:promote <service> <app>
+```
+
+examples:
+
+If you have a rethinkdb service linked to an app and try to link another rethinkdb service another link environment variable will be generated automatically:
+
+```
+DOKKU_RETHINKDB_BLUE_URL=rethinkdb://other_service:ANOTHER_PASSWORD@dokku-rethinkdb-other-service:28015/other_service
+```
+
+You can promote the new service to be the primary one:
+
+> NOTE: this will restart your app
+
+```shell
+dokku rethinkdb:promote other_service playground
+```
+
+This will replace rethinkdb_url with the url from other_service and generate another environment variable to hold the previous value if necessary. You could end up with the following for example:
+
+```
+RETHINKDB_URL=rethinkdb://other_service:ANOTHER_PASSWORD@dokku-rethinkdb-other-service:28015/other_service
+DOKKU_RETHINKDB_BLUE_URL=rethinkdb://other_service:ANOTHER_PASSWORD@dokku-rethinkdb-other-service:28015/other_service
+DOKKU_RETHINKDB_SILVER_URL=rethinkdb://lolipop:SOME_PASSWORD@dokku-rethinkdb-lolipop:28015/lolipop
+```
+### graceful shutdown and restart of the rethinkdb service container
+
+```shell
+# usage
+dokku rethinkdb:restart <service>
+```
+
+examples:
+
+Restart the service:
+
+```shell
+dokku rethinkdb:restart lolipop
+```
+### start a previously stopped rethinkdb service
+
+```shell
+# usage
+dokku rethinkdb:start <service>
+```
+
+examples:
+
+Start the service:
+
+```shell
+dokku rethinkdb:start lolipop
+```
+### stop a running rethinkdb service
+
+```shell
+# usage
+dokku rethinkdb:stop <service>
+```
+
+examples:
+
+Stop the service and the running container:
+
+```shell
+dokku rethinkdb:stop lolipop
+```
+### upgrade service <service> to the specified versions
+
+```shell
+# usage
+dokku rethinkdb:upgrade <service> [--upgrade-flags...]
+```
+
+examples:
+
+You can upgrade an existing service to a new image or image-version:
+
+```shell
+dokku rethinkdb:upgrade lolipop
+```
+
+### Service Automation
+
+Service scripting can be executed using the following commands:
+
+### list all rethinkdb service links for a given app
+
+```shell
+# usage
+dokku rethinkdb:app-links <app>
+```
+
+examples:
+
+List all rethinkdb services that are linked to the 'playground' app. :
+
+```shell
+dokku rethinkdb:app-links playground
+```
+### create container <new-name> then copy data from <name> into <new-name>
+
+```shell
+# usage
+dokku rethinkdb:clone <service> <new-service> [--clone-flags...]
+```
+
+examples:
+
+You can clone an existing service to a new one:
+
+```shell
+dokku rethinkdb:clone lolipop lolipop-2
+```
+### check if the rethinkdb service exists
+
+```shell
+# usage
+dokku rethinkdb:exists <service>
+```
+
+examples:
+
+Here we check if the lolipop rethinkdb service exists. :
+
+```shell
+dokku rethinkdb:exists lolipop
+```
+### check if the rethinkdb service is linked to an app
+
+```shell
+# usage
+dokku rethinkdb:linked <service> <app>
+```
+
+examples:
+
+Here we check if the lolipop rethinkdb service is linked to the 'playground' app. :
+
+```shell
+dokku rethinkdb:linked lolipop playground
+```
+### list all apps linked to the rethinkdb service
+
+```shell
+# usage
+dokku rethinkdb:links <service>
+```
+
+examples:
+
+List all apps linked to the 'lolipop' rethinkdb service. :
+
+```shell
+dokku rethinkdb:links lolipop
+```
+
+### Data Management
+
+The underlying service data can be imported and exported with the following commands:
+
+### import a dump into the rethinkdb service database
+
+```shell
+# usage
+dokku rethinkdb:import <service>
+```
+
+examples:
+
+Import a datastore dump:
+
+```shell
+dokku rethinkdb:import lolipop < database.dump
+```
+### export a dump of the rethinkdb service database
+
+```shell
+# usage
+dokku rethinkdb:export <service>
+```
+
+examples:
+
+By default, datastore output is exported to stdout:
+
+```shell
+dokku rethinkdb:export lolipop
+```
+
+You can redirect this output to a file:
+
+```shell
+dokku rethinkdb:export lolipop > lolipop.dump
+```
+
+### Backups
+
+Datastore backups are supported via AWS S3 and S3 compatible services like [minio](https://github.com/minio/minio).
+
+You may skip the `backup-auth` step if your dokku install is running within EC2 and has access to the bucket via an IAM profile. In that case, use the `--use-iam` option with the `backup` command.
+
+Backups can be performed using the backup commands:
+
+### sets up authentication for backups on the rethinkdb service
+
+```shell
+# usage
+dokku rethinkdb:backup-auth <service> <aws-access-key-id> <aws-secret-access-key> <aws-default-region> <aws-signature-version> <endpoint-url>
+```
+
+examples:
+
+Setup s3 backup authentication:
+
+```shell
+dokku rethinkdb:backup-auth lolipop AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+```
+
+Setup s3 backup authentication with different region:
+
+```shell
+dokku rethinkdb:backup-auth lolipop AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_REGION
+```
+
+Setup s3 backup authentication with different signature version and endpoint:
+
+```shell
+dokku rethinkdb:backup-auth lolipop AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_REGION AWS_SIGNATURE_VERSION ENDPOINT_URL
+```
+
+More specific example for minio auth:
+
+```shell
+dokku rethinkdb:backup-auth lolipop MINIO_ACCESS_KEY_ID MINIO_SECRET_ACCESS_KEY us-east-1 s3v4 https://YOURMINIOSERVICE
+```
+### removes backup authentication for the rethinkdb service
+
+```shell
+# usage
+dokku rethinkdb:backup-deauth <service>
+```
+
+examples:
+
+Remove s3 authentication:
+
+```shell
+dokku rethinkdb:backup-deauth lolipop
+```
+### creates a backup of the rethinkdb service to an existing s3 bucket
+
+```shell
+# usage
+dokku rethinkdb:backup <service> <bucket-name> [--use-iam]
+```
+
+examples:
+
+Backup the 'lolipop' service to the 'my-s3-bucket' bucket on aws:
+
+```shell
+dokku rethinkdb:backup lolipop my-s3-bucket --use-iam
+```
+### sets encryption for all future backups of rethinkdb service
+
+```shell
+# usage
+dokku rethinkdb:backup-set-encryption <service> <passphrase>
+```
+
+examples:
+
+Set a gpg passphrase for backups:
+
+```shell
+dokku rethinkdb:backup-set-encryption lolipop
+```
+### unsets encryption for future backups of the rethinkdb service
+
+```shell
+# usage
+dokku rethinkdb:backup-unset-encryption <service>
+```
+
+examples:
+
+Unset a gpg encryption key for backups:
+
+```shell
+dokku rethinkdb:backup-unset-encryption lolipop
+```
+### schedules a backup of the rethinkdb service
+
+```shell
+# usage
+dokku rethinkdb:backup-schedule <service> <schedule> <bucket-name> [--use-iam]
+```
+
+examples:
+
+Schedule a backup:
+
+> 'schedule' is a crontab expression, eg. "0 3 * * *" for each day at 3am
+
+```shell
+dokku rethinkdb:backup-schedule lolipop "0 3 * * *" my-s3-bucket
+```
+
+Schedule a backup and authenticate via iam:
+
+```shell
+dokku rethinkdb:backup-schedule lolipop "0 3 * * *" my-s3-bucket --use-iam
+```
+### cat the contents of the configured backup cronfile for the service
+
+```shell
+# usage
+dokku rethinkdb:backup-schedule-cat <service>
+```
+
+examples:
+
+Cat the contents of the configured backup cronfile for the service:
+
+```shell
+dokku rethinkdb:backup-schedule-cat lolipop
+```
+### unschedules the backup of the rethinkdb service
+
+```shell
+# usage
+dokku rethinkdb:backup-unschedule <service>
+```
+
+examples:
+
+Remove the scheduled backup from cron:
+
+```shell
+dokku rethinkdb:backup-unschedule lolipop
+```
+
+### Disabling `docker pull` calls
 
 If you wish to disable the `docker pull` calls that the plugin triggers, you may set the `RETHINKDB_DISABLE_PULL` environment variable to `true`. Once disabled, you will need to pull the service image you wish to deploy as shown in the `stderr` output.
 
