@@ -66,15 +66,15 @@ Create a rethinkdb service named lolipop:
 dokku rethinkdb:create lolipop
 ```
 
-You can also specify the image and image version to use for the service. It *must* be compatible with the ${plugin_image} image.
+You can also specify the image and image version to use for the service. It *must* be compatible with the rethinkdb image. 
 
 ```shell
-export RETHINKDB_IMAGE="${PLUGIN_IMAGE}"
+export RETHINKDB_IMAGE="rethinkdb"
 export RETHINKDB_IMAGE_VERSION="${PLUGIN_IMAGE_VERSION}"
 dokku rethinkdb:create lolipop
 ```
 
-You can also specify custom environment variables to start the rethinkdb service in semi-colon separated form.
+You can also specify custom environment variables to start the rethinkdb service in semi-colon separated form. 
 
 ```shell
 export RETHINKDB_CUSTOM_ENV="USER=alpha;HOST=beta"
@@ -170,7 +170,7 @@ flags:
 - `-a|--alias "BLUE_DATABASE"`: an alternative alias to use for linking to an app via environment variable
 - `-q|--querystring "pool=5"`: ampersand delimited querystring arguments to append to the service link
 
-A rethinkdb service can be linked to a container. This will use native docker links via the docker-options plugin. Here we link it to our 'playground' app.
+A rethinkdb service can be linked to a container. This will use native docker links via the docker-options plugin. Here we link it to our 'playground' app. 
 
 > NOTE: this will restart your app
 
@@ -201,14 +201,14 @@ The host exposed here only works internally in docker containers. If you want yo
 dokku rethinkdb:link other_service playground
 ```
 
-It is possible to change the protocol for rethinkdb_url by setting the environment variable rethinkdb_database_scheme on the app. Doing so will after linking will cause the plugin to think the service is not linked, and we advise you to unlink before proceeding.
+It is possible to change the protocol for `RETHINKDB_URL` by setting the environment variable `RETHINKDB_DATABASE_SCHEME` on the app. Doing so will after linking will cause the plugin to think the service is not linked, and we advise you to unlink before proceeding. 
 
 ```shell
 dokku config:set playground RETHINKDB_DATABASE_SCHEME=rethinkdb2
 dokku rethinkdb:link lolipop playground
 ```
 
-This will cause rethinkdb_url to be set as:
+This will cause `RETHINKDB_URL` to be set as:
 
 ```
 rethinkdb2://lolipop:SOME_PASSWORD@dokku-rethinkdb-lolipop:28015/lolipop
@@ -253,13 +253,13 @@ dokku rethinkdb:connect lolipop
 dokku rethinkdb:enter <service>
 ```
 
-A bash prompt can be opened against a running service. Filesystem changes will not be saved to disk.
+A bash prompt can be opened against a running service. Filesystem changes will not be saved to disk. 
 
 ```shell
 dokku rethinkdb:enter lolipop
 ```
 
-You may also run a command directly against the service. Filesystem changes will not be saved to disk.
+You may also run a command directly against the service. Filesystem changes will not be saved to disk. 
 
 ```shell
 dokku rethinkdb:enter lolipop touch /tmp/test
@@ -272,10 +272,10 @@ dokku rethinkdb:enter lolipop touch /tmp/test
 dokku rethinkdb:expose <service> <ports...>
 ```
 
-Expose the service on the service's normal ports, allowing access to it from the public interface (0. 0. 0. 0):
+Expose the service on the service's normal ports, allowing access to it from the public interface (`0.0.0.0`):
 
 ```shell
-dokku rethinkdb:expose lolipop ${PLUGIN_DATASTORE_PORTS[@]}
+dokku rethinkdb:expose lolipop 28015 29015 8080
 ```
 
 ### unexpose a previously exposed rethinkdb service
@@ -285,7 +285,7 @@ dokku rethinkdb:expose lolipop ${PLUGIN_DATASTORE_PORTS[@]}
 dokku rethinkdb:unexpose <service>
 ```
 
-Unexpose the service, removing access to it from the public interface (0. 0. 0. 0):
+Unexpose the service, removing access to it from the public interface (`0.0.0.0`):
 
 ```shell
 dokku rethinkdb:unexpose lolipop
@@ -312,7 +312,7 @@ You can promote the new service to be the primary one:
 dokku rethinkdb:promote other_service playground
 ```
 
-This will replace rethinkdb_url with the url from other_service and generate another environment variable to hold the previous value if necessary. You could end up with the following for example:
+This will replace `RETHINKDB_URL` with the url from other_service and generate another environment variable to hold the previous value if necessary. You could end up with the following for example:
 
 ```
 RETHINKDB_URL=rethinkdb://other_service:ANOTHER_PASSWORD@dokku-rethinkdb-other-service:28015/other_service
@@ -390,7 +390,7 @@ Service scripting can be executed using the following commands:
 dokku rethinkdb:app-links <app>
 ```
 
-List all rethinkdb services that are linked to the 'playground' app.
+List all rethinkdb services that are linked to the 'playground' app. 
 
 ```shell
 dokku rethinkdb:app-links playground
@@ -403,7 +403,7 @@ dokku rethinkdb:app-links playground
 dokku rethinkdb:exists <service>
 ```
 
-Here we check if the lolipop rethinkdb service exists.
+Here we check if the lolipop rethinkdb service exists. 
 
 ```shell
 dokku rethinkdb:exists lolipop
@@ -416,7 +416,7 @@ dokku rethinkdb:exists lolipop
 dokku rethinkdb:linked <service> <app>
 ```
 
-Here we check if the lolipop rethinkdb service is linked to the 'playground' app.
+Here we check if the lolipop rethinkdb service is linked to the 'playground' app. 
 
 ```shell
 dokku rethinkdb:linked lolipop playground
@@ -429,7 +429,7 @@ dokku rethinkdb:linked lolipop playground
 dokku rethinkdb:links <service>
 ```
 
-List all apps linked to the 'lolipop' rethinkdb service.
+List all apps linked to the 'lolipop' rethinkdb service. 
 
 ```shell
 dokku rethinkdb:links lolipop
