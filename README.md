@@ -1,4 +1,4 @@
-# dokku rethinkdb [![Build Status](https://img.shields.io/circleci/project/github/dokku/dokku-rethinkdb.svg?branch=master&style=flat-square "Build Status")](https://circleci.com/gh/dokku/dokku-rethinkdb/tree/master) [![IRC Network](https://img.shields.io/badge/irc-freenode-blue.svg?style=flat-square "IRC Freenode")](https://webchat.freenode.net/?channels=dokku)
+# dokku rethinkdb [![Build Status](https://img.shields.io/github/workflow/status/dokku/dokku-rethinkdb/CI/master?style=flat-square "Build Status")](https://github.com/dokku/dokku-rethinkdb/actions/workflows/ci.yml?query=branch%3Amaster) [![IRC Network](https://img.shields.io/badge/irc-libera-blue.svg?style=flat-square "IRC Libera")](https://webchat.libera.chat/?channels=dokku)
 
 Official rethinkdb plugin for dokku. Currently defaults to installing [rethinkdb 2.4.1](https://hub.docker.com/_/rethinkdb/).
 
