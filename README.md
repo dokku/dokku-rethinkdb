@@ -23,7 +23,7 @@ rethinkdb:create <service> [--create-flags...]   # create a rethinkdb service
 rethinkdb:destroy <service> [-f|--force]         # delete the rethinkdb service/data/container if there are no links left
 rethinkdb:enter <service>                        # enter or run a command in a running rethinkdb service container
 rethinkdb:exists <service>                       # check if the rethinkdb service exists
-rethinkdb:expose <service> <ports...>            # expose a rethinkdb service on custom port if provided (random port otherwise)
+rethinkdb:expose <service> <ports...>            # expose a rethinkdb service on custom host:port if provided (random port on the 0.0.0.0 interface if otherwise unspecified)
 rethinkdb:info <service> [--single-info-flag]    # print the service information
 rethinkdb:link <service> <app> [--link-flags...] # link the rethinkdb service to the app
 rethinkdb:linked <service> <app>                 # check if the rethinkdb service is linked to an app
@@ -265,7 +265,7 @@ You may also run a command directly against the service. Filesystem changes will
 dokku rethinkdb:enter lolipop touch /tmp/test
 ```
 
-### expose a rethinkdb service on custom port if provided (random port otherwise)
+### expose a rethinkdb service on custom host:port if provided (random port on the 0.0.0.0 interface if otherwise unspecified)
 
 ```shell
 # usage
@@ -276,6 +276,12 @@ Expose the service on the service's normal ports, allowing access to it from the
 
 ```shell
 dokku rethinkdb:expose lolipop 28015 29015 8080
+```
+
+Expose the service on the service's normal ports, with the first on a specified ip adddress (127.0.0.1):
+
+```shell
+dokku rethinkdb:expose lolipop 127.0.0.1:28015 29015 8080
 ```
 
 ### unexpose a previously exposed rethinkdb service
