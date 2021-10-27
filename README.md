@@ -17,26 +17,26 @@ sudo dokku plugin:install https://github.com/dokku/dokku-rethinkdb.git rethinkdb
 ## Commands
 
 ```
-rethinkdb:app-links <app>                        # list all rethinkdb service links for a given app
-rethinkdb:connect <service>                      # connect to the service via the rethinkdb connection tool
-rethinkdb:create <service> [--create-flags...]   # create a rethinkdb service
-rethinkdb:destroy <service> [-f|--force]         # delete the rethinkdb service/data/container if there are no links left
-rethinkdb:enter <service>                        # enter or run a command in a running rethinkdb service container
-rethinkdb:exists <service>                       # check if the rethinkdb service exists
-rethinkdb:expose <service> <ports...>            # expose a rethinkdb service on custom host:port if provided (random port on the 0.0.0.0 interface if otherwise unspecified)
-rethinkdb:info <service> [--single-info-flag]    # print the service information
-rethinkdb:link <service> <app> [--link-flags...] # link the rethinkdb service to the app
-rethinkdb:linked <service> <app>                 # check if the rethinkdb service is linked to an app
-rethinkdb:links <service>                        # list all apps linked to the rethinkdb service
-rethinkdb:list                                   # list all rethinkdb services
-rethinkdb:logs <service> [-t|--tail]             # print the most recent log(s) for this service
-rethinkdb:promote <service> <app>                # promote service <service> as RETHINKDB_URL in <app>
-rethinkdb:restart <service>                      # graceful shutdown and restart of the rethinkdb service container
-rethinkdb:start <service>                        # start a previously stopped rethinkdb service
-rethinkdb:stop <service>                         # stop a running rethinkdb service
-rethinkdb:unexpose <service>                     # unexpose a previously exposed rethinkdb service
-rethinkdb:unlink <service> <app>                 # unlink the rethinkdb service from the app
-rethinkdb:upgrade <service> [--upgrade-flags...] # upgrade service <service> to the specified versions
+rethinkdb:app-links <app>                          # list all rethinkdb service links for a given app
+rethinkdb:connect <service>                        # connect to the service via the rethinkdb connection tool
+rethinkdb:create <service> [--create-flags...]     # create a rethinkdb service
+rethinkdb:destroy <service> [-f|--force]           # delete the rethinkdb service/data/container if there are no links left
+rethinkdb:enter <service>                          # enter or run a command in a running rethinkdb service container
+rethinkdb:exists <service>                         # check if the rethinkdb service exists
+rethinkdb:expose <service> <ports...>              # expose a rethinkdb service on custom host:port if provided (random port on the 0.0.0.0 interface if otherwise unspecified)
+rethinkdb:info <service> [--single-info-flag]      # print the service information
+rethinkdb:link <service> <app> [--link-flags...]   # link the rethinkdb service to the app
+rethinkdb:linked <service> <app>                   # check if the rethinkdb service is linked to an app
+rethinkdb:links <service>                          # list all apps linked to the rethinkdb service
+rethinkdb:list                                     # list all rethinkdb services
+rethinkdb:logs <service> [-t|--tail] <tail-num-optional> # print the most recent log(s) for this service
+rethinkdb:promote <service> <app>                  # promote service <service> as RETHINKDB_URL in <app>
+rethinkdb:restart <service>                        # graceful shutdown and restart of the rethinkdb service container
+rethinkdb:start <service>                          # start a previously stopped rethinkdb service
+rethinkdb:stop <service>                           # stop a running rethinkdb service
+rethinkdb:unexpose <service>                       # unexpose a previously exposed rethinkdb service
+rethinkdb:unlink <service> <app>                   # unlink the rethinkdb service from the app
+rethinkdb:upgrade <service> [--upgrade-flags...]   # upgrade service <service> to the specified versions
 ```
 
 ## Usage
@@ -142,12 +142,12 @@ dokku rethinkdb:list
 
 ```shell
 # usage
-dokku rethinkdb:logs <service> [-t|--tail]
+dokku rethinkdb:logs <service> [-t|--tail] <tail-num-optional>
 ```
 
 flags:
 
-- `-t|--tail`: do not stop when end of the logs are reached and wait for additional output
+- `-t|--tail [<tail-num>]`: do not stop when end of the logs are reached and wait for additional output
 
 You can tail logs for a particular service:
 
@@ -159,6 +159,12 @@ By default, logs will not be tailed, but you can do this with the --tail flag:
 
 ```shell
 dokku rethinkdb:logs lollipop --tail
+```
+
+The default tail setting is to show all logs, but an initial count can also be specified:
+
+```shell
+dokku rethinkdb:logs lollipop --tail 5
 ```
 
 ### link the rethinkdb service to the app
