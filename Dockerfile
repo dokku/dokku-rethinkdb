@@ -1,1 +1,1 @@
-FROM rethinkdb:2.4.1
+FROM rethinkdb:2.4.2
