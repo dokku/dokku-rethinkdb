@@ -30,6 +30,7 @@ rethinkdb:linked <service> <app>                   # check if the rethinkdb serv
 rethinkdb:links <service>                          # list all apps linked to the rethinkdb service
 rethinkdb:list                                     # list all rethinkdb services
 rethinkdb:logs <service> [-t|--tail] <tail-num-optional> # print the most recent log(s) for this service
+rethinkdb:pause <service>                          # pause a running rethinkdb service
 rethinkdb:promote <service> <app>                  # promote service <service> as RETHINKDB_URL in <app>
 rethinkdb:restart <service>                        # graceful shutdown and restart of the rethinkdb service container
 rethinkdb:start <service>                          # start a previously stopped rethinkdb service
@@ -359,10 +360,23 @@ dokku rethinkdb:start lollipop
 dokku rethinkdb:stop <service>
 ```
 
-Stop the service and the running container:
+Stop the service and removes the running container:
 
 ```shell
 dokku rethinkdb:stop lollipop
+```
+
+### pause a running rethinkdb service
+
+```shell
+# usage
+dokku rethinkdb:pause <service>
+```
+
+Pause the running container for the service:
+
+```shell
+dokku rethinkdb:pause lollipop
 ```
 
 ### graceful shutdown and restart of the rethinkdb service container
