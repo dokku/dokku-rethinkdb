@@ -101,7 +101,10 @@ flags:
 - `--exposed-ports`: show service exposed ports
 - `--id`: show the service container id
 - `--internal-ip`: show the service internal ip
+- `--initial-network`: show the initial network being connected to
 - `--links`: show the service app links
+- `--post-create-network`: show the networks to attach to after service container creation
+- `--post-start-network`: show the networks to attach to after service container start
 - `--service-root`: show the service root directory
 - `--status`: show the service running status
 - `--version`: show the service image version
@@ -121,7 +124,10 @@ dokku rethinkdb:info lollipop --dsn
 dokku rethinkdb:info lollipop --exposed-ports
 dokku rethinkdb:info lollipop --id
 dokku rethinkdb:info lollipop --internal-ip
+dokku rethinkdb:info lollipop --initial-network
 dokku rethinkdb:info lollipop --links
+dokku rethinkdb:info lollipop --post-create-network
+dokku rethinkdb:info lollipop --post-start-network
 dokku rethinkdb:info lollipop --service-root
 dokku rethinkdb:info lollipop --status
 dokku rethinkdb:info lollipop --version
