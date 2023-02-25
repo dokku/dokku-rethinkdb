@@ -213,7 +213,7 @@ DOKKU_RETHINKDB_LOLLIPOP_PORT_28015_TCP_ADDR=172.17.0.1
 The following will be set on the linked application by default:
 
 ```
-RETHINKDB_URL=rethinkdb://lollipop:SOME_PASSWORD@dokku-rethinkdb-lollipop:28015/lollipop
+RETHINKDB_URL=rethinkdb://dokku-rethinkdb-lollipop:28015/lollipop
 ```
 
 The host exposed here only works internally in docker containers. If you want your container to be reachable from outside, you should use the `expose` subcommand. Another service can be linked to your app:
@@ -232,13 +232,7 @@ dokku rethinkdb:link lollipop playground
 This will cause `RETHINKDB_URL` to be set as:
 
 ```
-rethinkdb2://lollipop:SOME_PASSWORD@dokku-rethinkdb-lollipop:28015/lollipop
-```
-
-If you specify `RETHINKDB_DATABASE_SCHEME` to equal `http`, we`ll also automatically adjust `RETHINKDB_URL` to match the http interface:
-
-```
-http://lollipop:SOME_PASSWORD@dokku-rethinkdb-lollipop:${PLUGIN_DATASTORE_PORTS[1]}
+rethinkdb2://dokku-rethinkdb-lollipop:28015/lollipop
 ```
 
 ### unlink the rethinkdb service from the app
