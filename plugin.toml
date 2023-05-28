@@ -1,4 +1,4 @@
 [plugin]
 description = "dokku rethinkdb service plugin"
-version = "1.32.0"
+version = "1.34.0"
 [plugin.config]
