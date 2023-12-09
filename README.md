@@ -82,7 +82,7 @@ export RETHINKDB_IMAGE_VERSION="${PLUGIN_IMAGE_VERSION}"
 dokku rethinkdb:create lollipop
 ```
 
-You can also specify custom environment variables to start the rethinkdb service in semi-colon separated form.
+You can also specify custom environment variables to start the rethinkdb service in semicolon-separated form.
 
 ```shell
 export RETHINKDB_CUSTOM_ENV="USER=alpha;HOST=beta"
