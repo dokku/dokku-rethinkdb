@@ -334,7 +334,7 @@ Expose the service on the service's normal ports, allowing access to it from the
 dokku rethinkdb:expose lollipop 28015 29015 8080
 ```
 
-Expose the service on the service's normal ports, with the first on a specified ip adddress (127.0.0.1):
+Expose the service on the service's normal ports, with the first on a specified ip address (127.0.0.1):
 
 ```shell
 dokku rethinkdb:expose lollipop 127.0.0.1:28015 29015 8080
@@ -514,6 +514,7 @@ List all apps linked to the `lollipop` rethinkdb service.
 ```shell
 dokku rethinkdb:links lollipop
 ```
+
 ### Backups
 
 Datastore backups are supported via AWS S3 and S3 compatible services like [minio](https://github.com/minio/minio).
