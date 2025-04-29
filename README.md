@@ -514,7 +514,6 @@ List all apps linked to the `lollipop` rethinkdb service.
 ```shell
 dokku rethinkdb:links lollipop
 ```
-
 ### Backups
 
 Datastore backups are supported via AWS S3 and S3 compatible services like [minio](https://github.com/minio/minio).
