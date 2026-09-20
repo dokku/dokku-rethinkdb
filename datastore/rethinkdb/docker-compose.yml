@@ -1,0 +1,44 @@
+---
+services:
+  rethinkdb:
+    image: "{{ .Image }}:{{ .ImageVersion }}"
+
+    volumes:
+      - type: bind
+        source: "{{ .HostRoot }}/data"
+        target: /data
+
+    ports:
+      # the port a driver connects on, and the one everything else addresses
+      - name: native
+        target: 28015
+        primary: true
+
+      # the port the servers in a cluster talk to each other on
+      - name: cluster
+        target: 29015
+
+      # the administrative interface, which is a web page rather than an api
+      - name: http
+        target: 8080
+
+x-dokku:
+  plugin: rethinkdb
+  title: RethinkDB
+  scheme: rethinkdb
+  alias: RETHINKDB
+  alt_alias: DOKKU_RETHINKDB
+
+  # no credentials: the image starts with an open admin account and the bash
+  # plugin never generated a password, so there is nothing to put in the url
+  dsn: "{{ .Scheme }}://{{ .Host }}:{{ .Port.native }}/{{ .Database }}"
+
+  # readiness is the driver port rather than the administrative one, which is
+  # what a linked app actually waits on
+  wait: native
+
+  # no commands at all. The image ships no shell client, which is why the bash
+  # plugin's connect, export and import each report that they are not yet
+  # implemented. Leaving them out is the same statement, made once: connect now
+  # reports that it is unavailable rather than accepting the invocation and
+  # then failing.
