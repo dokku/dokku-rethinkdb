@@ -42,3 +42,7 @@ x-dokku:
   # implemented. Leaving them out is the same statement, made once: connect now
   # reports that it is unavailable rather than accepting the invocation and
   # then failing.
+
+  # the database the server keeps for itself. A service named after it would
+  # hand its app the server's own database rather than one of its own
+  reserved_names: [rethinkdb]
