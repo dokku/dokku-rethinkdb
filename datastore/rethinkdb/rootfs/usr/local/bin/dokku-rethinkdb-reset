@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+"""Drops every table in every database but the server's own.
+
+The image ships no client, so the queries go through the endpoint the
+administrative web page runs its own queries through. It takes what a driver
+sends over the wire - an eight byte token and the query as json - and answers
+with the token, a length and the response.
+
+Tables rather than databases: a service is not created with a database of its
+own, the one its url names is made by whatever first writes to it, so which
+databases a fresh service has is not this script's to decide. Dropping every
+table deletes every document all the same, and leaves an app's database where
+it expects to find it.
+"""
+import json
+import os
+import struct
+import sys
+import urllib.request
+
+HOST = os.environ.get("RETHINKDB_HOST", "127.0.0.1")
+PORT = os.environ.get("RETHINKDB_HTTP_PORT", "8080")
+
+# the terms the queries below use, as the protocol numbers them
+START = 1
+DB = 14
+DB_LIST = 59
+TABLE_DROP = 61
+TABLE_LIST = 62
+
+# the response types that carry a result, as the protocol numbers them
+SUCCESS_ATOM = 1
+SUCCESS_SEQUENCE = 2
+
+# the database the server keeps its own tables in, which cannot be dropped from
+SYSTEM_DATABASE = "rethinkdb"
+
+
+def post(path, body=b""):
+    url = "http://{}:{}/ajax/reql/{}".format(HOST, PORT, path)
+    message = urllib.request.Request(url, data=body, method="POST")
+
+    with urllib.request.urlopen(message) as response:
+        return response.read()
+
+
+def query(connection, term):
+    body = struct.pack("<q", 1) + json.dumps([START, term, {}]).encode()
+    response = post("?conn_id={}".format(connection), body)
+
+    # the token and the length come before the json
+    result = json.loads(response[12:])
+    if result.get("t") not in (SUCCESS_ATOM, SUCCESS_SEQUENCE):
+        raise RuntimeError("query {} failed: {}".format(json.dumps(term), result.get("r")))
+
+    if result["t"] == SUCCESS_ATOM:
+        return result["r"][0]
+
+    return result["r"]
+
+
+def main():
+    connection = post("open-new-connection").decode().strip()
+    try:
+        for database in query(connection, [DB_LIST, []]):
+            if database == SYSTEM_DATABASE:
+                continue
+
+            for table in query(connection, [TABLE_LIST, [[DB, [database]]]]):
+                query(connection, [TABLE_DROP, [[DB, [database]], table]])
+    except RuntimeError as error:
+        sys.stderr.write("{}\n".format(error))
+        return 1
+    finally:
+        try:
+            post("close-connection?conn_id={}".format(connection))
+        except OSError:
+            pass
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

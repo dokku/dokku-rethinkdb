@@ -37,11 +37,19 @@ x-dokku:
   # what a linked app actually waits on
   wait: native
 
-  # no commands at all. The image ships no shell client, which is why the bash
-  # plugin's connect, export and import each report that they are not yet
-  # implemented. Leaving them out is the same statement, made once: connect now
-  # reports that it is unavailable rather than accepting the invocation and
+  # no connect, export or import. The image ships no shell client, which is why
+  # the bash plugin's connect, export and import each report that they are not
+  # yet implemented. Leaving them out is the same statement, made once: connect
+  # now reports that it is unavailable rather than accepting the invocation and
   # then failing.
+  commands:
+    # beside the service, in an image dokku already ships that has python. The
+    # queries go through the endpoint the administrative page runs its own
+    # through, which needs no driver installed at runtime.
+    reset:
+      mode: sidecar
+      image: dokku/s3backup:0.20.0
+      exec: ["dokku-rethinkdb-reset"]
 
   # the database the server keeps for itself. A service named after it would
   # hand its app the server's own database rather than one of its own
