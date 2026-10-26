@@ -73,6 +73,7 @@ flags:
 - `-S|--post-start-network <strings>`: a comma-separated list of networks to attach the service container to after service start
 - `--restart <string>`: the docker restart policy to run the service container with (default: always)
 - `-r|--root-password <string>`: override the root-level service password, for datastores that have one
+- `--service-memory <string>`: memory in megabytes the datastore itself is told to use, such as a cache size or a heap, for datastores that support it (default: the datastore's own)
 - `-s|--shm-size <string>`: override shared memory size for the service docker container
 - `--volume <stringArray>`: a host path or docker volume to mount into the service container, as <source>:<container-dir>[:<options>], repeatable
 - `--volume-target <stringArray>`: mount one of the definition's volumes at another container path, as <volume>=<container-dir>, repeatable
@@ -221,6 +222,7 @@ flags:
 - `--restart-policy`: show the restart policy the service container is run with
 - `--root-password-fingerprint`: show a sha256 fingerprint of the service root password
 - `--service`: show the name of the service
+- `--service-memory`: show the memory in megabytes the datastore itself is told to use
 - `--service-root`: show the service root directory
 - `--shm-size`: show the shared memory size the service container is run with
 - `--status`: show the service running status
@@ -923,6 +925,7 @@ flags:
 - `-S|--post-start-network <strings>`: a comma-separated list of networks to attach the service container to after service start
 - `--restart <string>`: the docker restart policy to run the service container with (default: always)
 - `-R|--restart-apps`: whether to stop and start the linked apps around the upgrade, required for one that migrates the data
+- `--service-memory <string>`: memory in megabytes the datastore itself is told to use, such as a cache size or a heap, empty for the datastore's own
 - `-s|--shm-size <string>`: override shared memory size for the service docker container
 - `--volume <stringArray>`: a host path or docker volume to mount into the service container, as <source>:<container-dir>[:<options>], repeatable
 - `--volume-target <stringArray>`: mount one of the definition's volumes at another container path, as <volume>=<container-dir>, repeatable
