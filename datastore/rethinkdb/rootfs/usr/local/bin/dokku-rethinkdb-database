@@ -1,0 +1,71 @@
+#!/usr/bin/env python3
+"""Creates or destroys a database made in a service.
+
+The image ships no client, so the query goes through the endpoint the
+administrative web page runs its own queries through, as reset's does.
+Destroying a database drops every table and document in it.
+
+Called as create or destroy, with the database in the environment.
+"""
+import json
+import os
+import struct
+import sys
+import urllib.request
+
+HOST = os.environ.get("RETHINKDB_HOST", "127.0.0.1")
+PORT = os.environ.get("RETHINKDB_HTTP_PORT", "8080")
+DATABASE = os.environ["RETHINKDB_DATABASE"]
+
+# the terms the queries below use, as the protocol numbers them
+START = 1
+DB_CREATE = 57
+DB_DROP = 58
+
+# the response type that carries a result, as the protocol numbers it
+SUCCESS_ATOM = 1
+
+
+def post(path, body=b""):
+    url = "http://{}:{}/ajax/reql/{}".format(HOST, PORT, path)
+    message = urllib.request.Request(url, data=body, method="POST")
+
+    with urllib.request.urlopen(message) as response:
+        return response.read()
+
+
+def query(connection, term):
+    body = struct.pack("<q", 1) + json.dumps([START, term, {}]).encode()
+    response = post("?conn_id={}".format(connection), body)
+
+    # the token and the length come before the json
+    result = json.loads(response[12:])
+    if result.get("t") != SUCCESS_ATOM:
+        raise RuntimeError("query {} failed: {}".format(json.dumps(term), result.get("r")))
+
+    return result["r"][0]
+
+
+def main():
+    terms = {"create": DB_CREATE, "destroy": DB_DROP}
+    if len(sys.argv) != 2 or sys.argv[1] not in terms:
+        sys.stderr.write("usage: dokku-rethinkdb-database create|destroy\n")
+        return 2
+
+    connection = post("open-new-connection").decode().strip()
+    try:
+        query(connection, [terms[sys.argv[1]], [DATABASE]])
+    except RuntimeError as error:
+        sys.stderr.write("{}\n".format(error))
+        return 1
+    finally:
+        try:
+            post("close-connection?conn_id={}".format(connection))
+        except OSError:
+            pass
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
