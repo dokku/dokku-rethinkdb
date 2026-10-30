@@ -33,6 +33,23 @@ x-dokku:
   # plugin never generated a password, so there is nothing to put in the url
   dsn: "{{ .Scheme }}://{{ .Host }}:{{ .Port.native }}/{{ .Database }}"
 
+  # the databases a service holds beside its own, made and dropped beside the
+  # service in the image reset runs in. There are no users to give them to: the
+  # server's admin account is open to every app
+  databases:
+    create:
+      mode: sidecar
+      image: dokku/s3backup:0.20.0
+      exec: ["dokku-rethinkdb-database", "create"]
+      env:
+        RETHINKDB_DATABASE: "{{ .Args.database }}"
+    destroy:
+      mode: sidecar
+      image: dokku/s3backup:0.20.0
+      exec: ["dokku-rethinkdb-database", "destroy"]
+      env:
+        RETHINKDB_DATABASE: "{{ .Args.database }}"
+
   # readiness is the driver port rather than the administrative one, which is
   # what a linked app actually waits on
   wait: native
@@ -50,6 +67,10 @@ x-dokku:
       mode: sidecar
       image: dokku/s3backup:0.20.0
       exec: ["dokku-rethinkdb-reset"]
+      env:
+        RETHINKDB_DATABASE: "{{ .Database }}"
+        RETHINKDB_DEFAULT_DATABASE: "{{ .DefaultDatabase }}"
+        RETHINKDB_DATABASES: "{{ .Args.databases }}"
 
   # the database the server keeps for itself. A service named after it would
   # hand its app the server's own database rather than one of its own

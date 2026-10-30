@@ -11,6 +11,10 @@ own, the one its url names is made by whatever first writes to it, so which
 databases a fresh service has is not this script's to decide. Dropping every
 table deletes every document all the same, and leaves an app's database where
 it expects to find it.
+
+The databases made in the service with create-database are left alone, since
+other apps may be linked to them. A reset of one of those, rather than of the
+service's own, drops the tables in that database alone.
 """
 import json
 import os
@@ -20,6 +24,9 @@ import urllib.request
 
 HOST = os.environ.get("RETHINKDB_HOST", "127.0.0.1")
 PORT = os.environ.get("RETHINKDB_HTTP_PORT", "8080")
+DATABASE = os.environ.get("RETHINKDB_DATABASE", "")
+DEFAULT_DATABASE = os.environ.get("RETHINKDB_DEFAULT_DATABASE", DATABASE)
+KEEP = set(os.environ.get("RETHINKDB_DATABASES", "").split())
 
 # the terms the queries below use, as the protocol numbers them
 START = 1
@@ -62,8 +69,12 @@ def query(connection, term):
 def main():
     connection = post("open-new-connection").decode().strip()
     try:
+        databases = [DATABASE]
+        if DATABASE == DEFAULT_DATABASE:
+            databases = [name for name in query(connection, [DB_LIST, []]) if name == DATABASE or name not in KEEP]
+
         for database in query(connection, [DB_LIST, []]):
-            if database == SYSTEM_DATABASE:
+            if database == SYSTEM_DATABASE or database not in databases:
                 continue
 
             for table in query(connection, [TABLE_LIST, [[DB, [database]]]]):
